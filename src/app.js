@@ -9,8 +9,10 @@ class App{
         this.server = express()
 
         mongoose.connect('mongodb+srv://arthurmeirelessm:msesjdfdn10@devhouse.xw1yxsr.mongodb.net/hotelapi?retryWrites=true&w=majority', {
-            useNe 
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
         })
+        
         this.middlewares()
         this.routes()
     }
