@@ -1,11 +1,16 @@
-const { json, application } = require('express')
-const express = require('express')
-const routes = require('./routes')
+import express from 'express'
+import routes from './routes'
+import mongoose from 'mongoose'
+
 
 class App{
 
     constructor() {
         this.server = express()
+
+        mongoose.connect('mongodb+srv://arthurmeirelessm:msesjdfdn10@devhouse.xw1yxsr.mongodb.net/hotelapi?retryWrites=true&w=majority', {
+            useNe 
+        })
         this.middlewares()
         this.routes()
     }
@@ -20,4 +25,4 @@ class App{
 }
 
 
-module.exports = new App().server
+export default new App().server
