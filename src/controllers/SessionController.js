@@ -5,14 +5,26 @@
 //Update: When we want to change one session(PUT)
 //Destroy: When we want to delete one session(DELETE)
 
+import User from '../models/User'
 
 class SessionController {
+    async store(req, res) {
+        const { email } = req.body
+        let user = await User.findOne({ email })
+        if (user == null) {
+            user = await User.create({ email })
+        }
+        return res.json(user)
+    }
 
-    store(req, res){
-      return res.json( { message: 'My API' } )
+    
+    async index(req, res) {
+        const findSessions = await User.find({}).then((artigo) => {
+            return res.json(artigo)
+        })
+        return findSessions
     }
 }
-
 
 
 export default new SessionController()

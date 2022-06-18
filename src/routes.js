@@ -6,5 +6,7 @@ const routes = new Router()
 
 routes.post('/sessions', sessionController.store)
 
+routes.get('/sessions', sessionController.index)
+
 export default routes
 
