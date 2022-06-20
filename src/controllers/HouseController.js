@@ -4,6 +4,8 @@
 //Show: When we want to only one session of list(GET)
 //Update: When we want to change one session(PUT)
 //Destroy: When we want to delete one session(DELETE)
+
+
 import House from '../models/House'
 
 class HouseController {
@@ -54,6 +56,12 @@ class HouseController {
         })
 
         return res.json(housesUpdate)
+    }
+
+    //Delete house
+    async destroy(req, res) {
+
+        return res.json({ ok: true })
     }
 }
 
