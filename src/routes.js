@@ -28,7 +28,7 @@ routes.get('/houses', HouseController.index)
 
 routes.put('/houses/:house_id', upload.single('thumbnail'), HouseController.update)
 
-routes.delete('/houses:house_id', HouseController.destroy)
+routes.delete('/houses/:house_id', HouseController.destroy)
 
 
 

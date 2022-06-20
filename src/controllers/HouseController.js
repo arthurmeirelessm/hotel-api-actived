@@ -60,8 +60,9 @@ class HouseController {
 
     //Delete house
     async destroy(req, res) {
-
-        return res.json({ ok: true })
+       const { house_id } = req.params
+       const DeleteHouse = await House.findByIdAndDelete({_id: house_id})
+       return res.json(DeleteHouse)
     }
 }
 
