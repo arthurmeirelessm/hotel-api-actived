@@ -20,6 +20,8 @@ routes.post('/sessions', sessionController.store)
 
 routes.get('/sessions', sessionController.index)
 
+routes.delete('/sessions/:user_id', sessionController.destroy)
+
 
 //Houses
 routes.post('/houses', upload.single('thumbnail'), HouseController.store)

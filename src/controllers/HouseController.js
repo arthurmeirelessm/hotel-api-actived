@@ -7,6 +7,7 @@
 
 
 import House from '../models/House'
+import User from '../models/User'
 
 class HouseController {
 
@@ -46,6 +47,13 @@ class HouseController {
         const { description, price, location, status } = req.body
         const { user_id } = req.headers
 
+       const user = await User.findById(user_id)
+       const house = await House.findById(house_id)
+
+       if(String(user._id) != String(house.user)) {
+           return res.status(401).json( {Error: 'Not authorized'})
+       }
+
         const housesUpdate = await House.updateOne({ _id: house_id }, {
             user: user_id,
             thumbnail: filename,
@@ -60,9 +68,9 @@ class HouseController {
 
     //Delete house
     async destroy(req, res) {
-       const { house_id } = req.params
-       const DeleteHouse = await House.findByIdAndDelete({_id: house_id})
-       return res.json(DeleteHouse)
+        const { house_id } = req.params
+        const DeleteHouse = await House.findByIdAndDelete({ _id: house_id })
+        return res.json(DeleteHouse)
     }
 }
 
