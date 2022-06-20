@@ -15,5 +15,7 @@ routes.get('/sessions', sessionController.index)
 
 routes.post('/houses', upload.single('thumbnail'), HouseController.store)
 
+routes.get('/houses', HouseController.index)
+
 export default routes
 
