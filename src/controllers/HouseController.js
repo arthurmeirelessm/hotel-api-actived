@@ -24,9 +24,7 @@ class HouseController {
         const { filename } = req.file
         const { description, price, location, status } = req.body
         const { user_id } = req.headers
-
-
-
+        
         const house = await House.create({
             user: user_id,
             thumbnail: filename,

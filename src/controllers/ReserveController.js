@@ -4,6 +4,8 @@ import User from "../models/User"
 
 
 class ReserveController {
+
+    //Create reserve with relatioship user and house models
     async store(req, res) {
         const { user_id } = req.headers
         const { house_id } = req.params

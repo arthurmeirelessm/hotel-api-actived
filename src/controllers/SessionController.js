@@ -26,7 +26,8 @@ class SessionController {
         })
         return findSessions
     }
-
+    
+    //Get one session/user 
     async show(req, res) {
         const { user_id } = req.params
         const getUserById = await User.find().then((response) => {
