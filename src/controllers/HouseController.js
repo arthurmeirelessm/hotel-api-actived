@@ -80,7 +80,7 @@ class HouseController {
         }
         let DeleteHouse
         DeleteHouse = await House.findByIdAndDelete({ _id: house_id })
-        return res.json(DeleteHouse)
+        return res.json({ Message: 'Delete with success' })
     }
 }
 
