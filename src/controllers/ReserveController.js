@@ -38,10 +38,11 @@ class ReserveController {
     async show(req, res) {
         const { user_id } = req.params
         const getUserReserves = await Reserve.find().then((response) => {
+            response.filter(item => item.user == user_id)
             return response
         })
-        const isSame = getUserReserves.filter(item => item.user == user_id)
-        return res.json(isSame)
+
+        return res.json(getUserReserves)
     }
 }
 
