@@ -8,6 +8,7 @@
 
 import House from '../models/House'
 import User from '../models/User'
+import * as Yup from 'yup'
 
 class HouseController {
 
@@ -21,10 +22,13 @@ class HouseController {
 
     //To create house in MongoDb
     async store(req, res) {
+        const schema = Yup.object().shape({
+            description: Yup.string().required()
+        }) 
         const { filename } = req.file
         const { description, price, location, status } = req.body
         const { user_id } = req.headers
-        
+
         const house = await House.create({
             user: user_id,
             thumbnail: filename,
