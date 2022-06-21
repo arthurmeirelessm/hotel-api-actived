@@ -21,10 +21,10 @@ class SessionController {
     //All registers sessions 
     async index(req, res) {
         //O metodo then é obrigado a receber um parametro "response" que esta relacionado a ao que tu quis buscart com o find
-        const findSessions = await User.find().then((response) => {
+        return await User.find().then((response) => {
             return res.json(response)
         })
-        return findSessions
+
     }
     
     //Get one session/user 

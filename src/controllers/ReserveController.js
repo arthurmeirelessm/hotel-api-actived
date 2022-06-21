@@ -38,6 +38,32 @@ class ReserveController {
         return res.json(createReserve)
     }
 
+    //Get all reserves
+    async index(req, res) {
+        return await Reserve.find().then((response) => {
+            return res.json(response)
+        })
+    }
+
+
+    //Delete/cancel reserves
+    async destroy(req, res) {
+        const { reserve_id } = req.params
+        const { user_id } = req.headers
+
+        const getUser = await User.findById(user_id)
+        const getReserve = await Reserve.findById(reserve_id)
+
+        if (String(getUser._id) != String(getReserve.user)) {
+            return res.status(400).json({ Error: 'No one can cancel the reservation other than the one who booked it' })
+        }
+
+        const deleteReserve = await Reserve.findByIdAndDelete(reserve_id)
+
+        return res.json(deleteReserve)
+    }
+
+
 
     //Busca reservas pelo id do usuario 
     async show(req, res) {

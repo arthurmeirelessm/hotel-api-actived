@@ -41,6 +41,10 @@ routes.post('/houses/:house_id/reserves', ReserveController.store)
 
 routes.get('/houses/:user_id/reserves', ReserveController.show)
 
+routes.get('/houses/reserves', ReserveController.index)
+
+routes.delete('/houses/:reserve_id/reserves', ReserveController.destroy)
+
 
 export default routes
 
