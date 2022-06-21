@@ -17,28 +17,31 @@ class ReserveController {
             date,
         })
 
-
         const getHouse = await House.findById(house_id)
         const getUser = await User.findById(user_id)
 
-        if (String(getHouse.user) != String(getUser._id)) {
-            return res.status(404).json({ Error: 'House not found' })
+        if (!getHouse) {
+            return res.status(400).json({ Error: 'House not found' })
         }
-
+        if (getHouse.status != true) {
+            return res.status(400).json({ Error: 'House not available' })
+        }
         if (String(getHouse.user) == String(getUser._id)) {
-            return res.status(404).json({ Error: 'User is same that was create' })
+            return res.status(401).json({ Error: 'User is same that was create' })
         }
-
-        if (getHouse.status == false) {
-           return res.status(404).json({ Error: 'House not available' })
-        }
-
-
-
         //Populate: Serve para mesclar os responses ue vem dois dois models citados abaixo (user, house)
         await createReserve.populate('house').populate('user').execPopulate()
 
         return res.json(createReserve)
+    }
+
+    async show(req, res) {
+        const { user_id } = req.params
+        const getUserReserves = await Reserve.find().then((response) => {
+            return response
+        })
+        const isSame = getUserReserves.filter(item => item.user == user_id)
+        return res.json(isSame)
     }
 }
 
