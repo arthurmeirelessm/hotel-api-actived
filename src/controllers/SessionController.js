@@ -26,11 +26,20 @@ class SessionController {
         })
         return findSessions
     }
-    
+
+    async show(req, res) {
+        const { user_id } = req.params
+        const getUserById = await User.find().then((response) => {
+            const filter = response.filter(item => item._id == user_id)
+            return filter
+        })
+        return res.json(getUserById)
+    }
+
     //Delete user
     async destroy(req, res) {
         const { user_id } = req.params
-        const DeleteUser = await User.findByIdAndDelete({_id: user_id })
+        const DeleteUser = await User.findByIdAndDelete({ _id: user_id })
         return res.json({ Message: 'Delete with success' })
     }
 }

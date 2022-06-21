@@ -29,17 +29,20 @@ class ReserveController {
         if (String(getHouse.user) == String(getUser._id)) {
             return res.status(401).json({ Error: 'User is same that was create' })
         }
+
         //Populate: Serve para mesclar os responses ue vem dois dois models citados abaixo (user, house)
         await createReserve.populate('house').populate('user').execPopulate()
 
         return res.json(createReserve)
     }
 
+
+    //Busca reservas pelo id do usuario 
     async show(req, res) {
         const { user_id } = req.params
         const getUserReserves = await Reserve.find().then((response) => {
-            response.filter(item => item.user == user_id)
-            return response
+            const filter = response.filter(item => item.user == user_id)
+            return filter
         })
 
         return res.json(getUserReserves)

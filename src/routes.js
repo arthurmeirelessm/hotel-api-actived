@@ -21,6 +21,8 @@ routes.post('/sessions', sessionController.store)
 
 routes.get('/sessions', sessionController.index)
 
+routes.get('/sessions/:user_id', sessionController.show)
+
 routes.delete('/sessions/:user_id', sessionController.destroy)
 
 
