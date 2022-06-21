@@ -11,8 +11,6 @@ class ReserveController {
         const { house_id } = req.params
         const { date } = req.body
 
-
-        console.log(house_id)
         const createReserve = await Reserve.create({
             user: user_id,
             house: house_id,
@@ -21,6 +19,14 @@ class ReserveController {
 
         const getHouse = await House.findById(house_id)
         const getUser = await User.findById(user_id)
+        const getReserve = await Reserve.find().then((response) => {
+            const filter = response.filter(item => item.date == date)
+            return filter
+        })
+         
+        if(getReserve) {
+           return res.status(400).json({ Error: 'We already have a reservation on this same date'  })
+        }
 
         if (!getHouse) {
             return res.status(400).json({ Error: 'House not found' })
