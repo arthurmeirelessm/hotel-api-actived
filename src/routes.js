@@ -4,7 +4,7 @@ import sessionController from './controllers/SessionController'
 import FromController from './controllers/SessionController'
 import multer from 'multer' //Extensão do express que permite a munipulação de arquivos, usado para passagens de arquivos pelos endpionts
 import uploadConfig from './config/upload'
-//import ReserveController from './controllers/ReserveController'
+import ReserveController from './controllers/ReserveController'
 
 
 const routes = new Router()
@@ -35,7 +35,7 @@ routes.delete('/houses/:house_id', HouseController.destroy)
 
 
 //reserves
-//routes.post('/reserves', ReserveController.store)
+routes.post('/reserves', ReserveController.store)
 
 
 export default routes
