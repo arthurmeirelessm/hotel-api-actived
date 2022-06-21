@@ -35,7 +35,7 @@ routes.delete('/houses/:house_id', HouseController.destroy)
 
 
 //reserves
-routes.post('/reserves', ReserveController.store)
+routes.post('/houses/:house_id/reserves', ReserveController.store)
 
 
 export default routes
