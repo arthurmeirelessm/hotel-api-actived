@@ -1,6 +1,8 @@
 import Reserve from "../models/Reserve";
 import House from "../models/House"
 import User from "../models/User"
+import * as Yup from 'yup'
+
 
 
 class ReserveController {
@@ -11,11 +13,13 @@ class ReserveController {
         const { house_id } = req.params
         const { date } = req.body
 
-        const createReserve = await Reserve.create({
-            user: user_id,
-            house: house_id,
-            date,
+        const schema = Yup.object().shape({
+            date: Yup.string().required(),
         })
+
+        if (!(schema.isValid(req.body))) {
+            return res.status(400).json({ Error: 'No field when creating should be empty' })
+        }
 
         const getHouse = await House.findById(house_id)
         const getUser = await User.findById(user_id)
@@ -23,11 +27,10 @@ class ReserveController {
             const filter = response.filter(item => item.date == date)
             return filter
         })
-         
-        if(getReserve) {
-           return res.status(400).json({ Error: 'We already have a reservation on this same date'  })
-        }
 
+        if (getReserve) {
+            return res.status(400).json({ Error: 'We already have a reservation on this same date' })
+        }
         if (!getHouse) {
             return res.status(400).json({ Error: 'House not found' })
         }
@@ -37,6 +40,12 @@ class ReserveController {
         if (String(getHouse.user) == String(getUser._id)) {
             return res.status(401).json({ Error: 'User is same that was create' })
         }
+
+        const createReserve = await Reserve.create({
+            user: user_id,
+            house: house_id,
+            date,
+        })
 
         //Populate: Serve para mesclar os responses ue vem dois dois models citados abaixo (user, house)
         await createReserve.populate('house').populate('user').execPopulate()

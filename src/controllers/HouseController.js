@@ -16,7 +16,7 @@ class HouseController {
     async index(req, res) {
         const { status } = req.query
         const getHouses = await House.find({ status })
-        return res.json(getHouses)
+         return res.json(getHouses)
     }
 
 
