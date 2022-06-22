@@ -22,12 +22,22 @@ class HouseController {
 
     //To create house in MongoDb
     async store(req, res) {
+
+        //Yup serve para validar se nenhum campo do request que vem do front está vazio ou nulo
         const schema = Yup.object().shape({
-            description: Yup.string().required()
-        }) 
+            description: Yup.string().required(),
+            price: Yup.number().required(),
+            location: Yup.string().required(),
+            status: Yup.boolean().required(),
+        })
+
         const { filename } = req.file
         const { description, price, location, status } = req.body
         const { user_id } = req.headers
+
+        if (!(await schema.isValid(req.body))) {
+            return res.status(400).json({ Error: 'No field when creating should be empty' })
+        }
 
         const house = await House.create({
             user: user_id,
@@ -37,8 +47,6 @@ class HouseController {
             location,
             status,
         })
-
-        console.log(filename)
         return res.json(house)
     }
 
@@ -49,6 +57,17 @@ class HouseController {
         const { house_id } = req.params
         const { description, price, location, status } = req.body
         const { user_id } = req.headers
+
+        const schema = Yup.object().shape({
+            description: Yup.string().required(),
+            price: Yup.number().required(),
+            location: Yup.string().required(),
+            status: Yup.boolean().required(),
+        })
+        
+        if (!(await schema.isValid(req.body))) {
+             return res.status(400).json({ Error: 'No field when creating should be empty'})
+        }
 
         const user = await User.findById(user_id)
         const house = await House.findById(house_id)
