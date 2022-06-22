@@ -16,12 +16,16 @@ class HouseController {
     async index(req, res) {
         const { status } = req.query
         const getHouses = await House.find({ status })
-         return res.json(getHouses)
+        return res.json(getHouses)
     }
 
 
     //To create house in MongoDb
     async store(req, res) {
+
+        const { filename } = req.file
+        const { description, price, location, status } = req.body
+        const { user_id } = req.headers
 
         //Yup serve para validar se nenhum campo do request que vem do front está vazio ou nulo
         const schema = Yup.object().shape({
@@ -31,9 +35,6 @@ class HouseController {
             status: Yup.boolean().required(),
         })
 
-        const { filename } = req.file
-        const { description, price, location, status } = req.body
-        const { user_id } = req.headers
 
         if (!(await schema.isValid(req.body))) {
             return res.status(400).json({ Error: 'No field when creating should be empty' })
@@ -47,6 +48,7 @@ class HouseController {
             location,
             status,
         })
+        
         return res.json(house)
     }
 
@@ -64,9 +66,9 @@ class HouseController {
             location: Yup.string().required(),
             status: Yup.boolean().required(),
         })
-        
+
         if (!(await schema.isValid(req.body))) {
-             return res.status(400).json({ Error: 'No field when creating should be empty'})
+            return res.status(400).json({ Error: 'No field when creating should be empty' })
         }
 
         const user = await User.findById(user_id)

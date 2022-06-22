@@ -13,22 +13,15 @@ class ReserveController {
         const { house_id } = req.params
         const { date } = req.body
 
-        const schema = Yup.object().shape({
-            date: Yup.string().required(),
-        })
-
-        if (!(schema.isValid(req.body))) {
-            return res.status(400).json({ Error: 'No field when creating should be empty' })
-        }
 
         const getHouse = await House.findById(house_id)
         const getUser = await User.findById(user_id)
         const getReserve = await Reserve.find().then((response) => {
-            const filter = response.filter(item => item.date == date)
-            return filter
+            const filterReserve = response.filter(item => item.date == date && item.house == house_id)
+            return filterReserve.length
         })
 
-        if (getReserve) {
+        if (getReserve > 0) {
             return res.status(400).json({ Error: 'We already have a reservation on this same date' })
         }
         if (!getHouse) {
