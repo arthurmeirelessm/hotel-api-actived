@@ -6,15 +6,27 @@
 //Destroy: When we want to delete one session(DELETE)
 
 import User from '../models/User'
+import * as Yup from 'yup'
 
 class SessionController {
     //To create session in MongoDb
     async store(req, res) {
+
         const { email } = req.body
+
+        const schema = Yup.object().shape({
+            email: Yup.string().email().required(),
+        })
+
+        if (!(await schema.isValid(req.body))) {
+            return res.status(400).json({ Error: 'Invalid email' })
+        }
+
         let user = await User.findOne({ email })
         if (user == null) {
             user = await User.create({ email })
         }
+        
         return res.json(user)
     }
 
@@ -26,7 +38,7 @@ class SessionController {
         })
 
     }
-    
+
     //Get one session/user 
     async show(req, res) {
         const { user_id } = req.params
